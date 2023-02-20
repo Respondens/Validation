@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Respect\Validation\Rules;
 
+use Respect\Validation\Exceptions\ComponentException;
 use Respect\Validation\Validatable;
 
 /**
@@ -23,10 +24,7 @@ use Respect\Validation\Validatable;
  */
 abstract class AbstractWrapper extends AbstractRule
 {
-    /**
-     * @var Validatable
-     */
-    private $validatable;
+    protected Validatable $validatable;
 
     /**
      * Initializes the rule.
@@ -34,6 +32,15 @@ abstract class AbstractWrapper extends AbstractRule
     public function __construct(Validatable $validatable)
     {
         $this->validatable = $validatable;
+    }
+
+    public function getValidatable(): Validatable
+    {
+        if (!$this->validatable instanceof Validatable) {
+            throw new ComponentException('There is no defined validatable');
+        }
+
+        return $this->validatable;
     }
 
     /**
