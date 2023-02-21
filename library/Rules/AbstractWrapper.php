@@ -36,7 +36,7 @@ abstract class AbstractWrapper extends AbstractRule
 
     public function getValidatable(): Validatable
     {
-        if (!$this->validatable instanceof Validatable) {
+        if (!isset($this->validatable)) {
             throw new ComponentException('There is no defined validatable');
         }
 
