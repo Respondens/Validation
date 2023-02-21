@@ -94,6 +94,11 @@ class ValidationException extends InvalidArgumentException implements Exception
         return $this->id;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     /**
      * @return mixed[]
      */
@@ -136,9 +141,25 @@ class ValidationException extends InvalidArgumentException implements Exception
         return isset($this->defaultTemplates[$this->mode][$this->template]) === false;
     }
 
+    public function getTemplate(): string
+    {
+        if (!empty($this->template)) {
+            return $this->template;
+        }
+
+        return $this->template = $this->buildTemplate();
+    }
+
     protected function chooseTemplate(): string
     {
         return (string) key($this->defaultTemplates[$this->mode]);
+    }
+
+    protected function buildTemplate(): string
+    {
+        $templateKey = $this->chooseTemplate();
+
+        return $this->defaultTemplates[$this->mode][$templateKey];
     }
 
     private function createMessage(): string
